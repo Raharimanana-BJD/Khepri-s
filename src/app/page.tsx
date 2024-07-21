@@ -1,12 +1,14 @@
 "use client"
 
+import {sendEmail} from "@/actions/sendEmail"
 import Image from "next/image";
 import { home_1, home_2, home_3 } from "../asset";
 import { CTA, CardBlog, CardService, Typography } from "../components";
-import { Check, Phone, AppWindowMacIcon } from "lucide-react";
+import { Check, Phone, AppWindowMacIcon, SendIcon } from "lucide-react";
 import { stylesIcon } from "../lib/utils";
 import { CardBlogs, CardServices } from "../lib/constant";
 import Link from "next/link";
+import { useFormStatus } from "react-dom";
 
 const iconMap={
   AppWindowMacIcon
@@ -206,71 +208,107 @@ function Contact(){
         <Typography variant="h3" className="text-secondary-500 mb-8">
           Prenez Contact
         </Typography>
-        <form className="grid grid-cols-2 gap-4 grid-flow-dense">
-          <div className="flex col-span-2 md:col-span-1 flex-col gap-2">
-            <label htmlFor="name" className="text-sm uppercase text-secondary-500 font-semibold">
-              Nom (Personnel, Entreprise, Société)
-            </label>
-            <input
-              type="text"
-              id="name"
-              placeholder="ex: Marc, Krepri, Facebook"
-              className="placeholder:text-grey-500 px-4 py-2 rounded-lg border text-secondary-500 border-secondary-100 w-full outline-none bg-inherit"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
-            <label htmlFor="email" className="text-sm uppercase text-secondary-500 font-semibold">
-              Mail
-            </label>
-            <input
-              type="email"
-              id="email"
-              placeholder="exemple@gmail.com"
-              className="placeholder:text-grey-500 px-4 py-2 rounded-lg border text-secondary-500 border-secondary-100 w-full outline-none bg-inherit"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
-            <label htmlFor="phone" className="text-sm uppercase text-secondary-500 font-semibold">
-              Numéros téléphone
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              placeholder="ex: +261 00 00 000"
-              className="placeholder:text-grey-500 px-4 py-2 rounded-lg border text-secondary-500 border-secondary-100 w-full outline-none bg-inherit"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
-            <label htmlFor="subject" className="text-sm uppercase text-secondary-500 font-semibold">
-              Objet
-            </label>
-            <select
-              id="subject"
-              className="px-4 py-2 rounded-lg border text-secondary-500 border-secondary-100 w-full outline-none bg-inherit"
-            >
-              <option value="default"></option>
-              <option value="Demande_de_stage">Demande de stage</option>
-              <option value="Demande_d_information">Demande d&apos; information</option>
-              <option value="Autre">Autre</option>
-            </select>
-          </div>
-
-          <div className="flex flex-col gap-2 col-span-2">
-            <label htmlFor="message" className="text-sm uppercase text-secondary-500 font-semibold">
-              Message
-            </label>
-            <textarea
-              id="message"
-              placeholder="Écrire un message..."
-              className="placeholder:text-grey-500 min-h-[30vh] text-start px-4 py-2 rounded-lg border text-secondary-500 border-secondary-100 w-full outline-none bg-inherit"
-            />
-          </div>
-          <div className="flex justify-end col-span-2"><button type="submit" className="p-2 rounded-lg bg-primary text-secondary-500 w-full md:w-fit min-w-[224px] max-w-[384px] mt-4 uppercase">Envoyer</button></div>
-        </form>
+        <Form/>
       </div>
     </section>
   );
+}
+
+function Form(){
+  return(
+    <form 
+    action={async (formaData) =>{ 
+     await sendEmail(formaData)
+    }}
+     className="grid grid-cols-2 gap-4 grid-flow-dense">
+      <div className="flex col-span-2 md:col-span-1 flex-col gap-2">
+        <label htmlFor="name" className="text-sm uppercase text-secondary-500 font-semibold">
+          Nom (Personnel, Entreprise, Société)
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          maxLength={500}
+          placeholder="ex: Marc, Krepri, Facebook"
+          className="placeholder:text-grey-500 px-4 py-2 rounded-lg border text-secondary-500 border-secondary-100 w-full outline-none bg-inherit"
+        />
+      </div>
+
+      <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
+        <label htmlFor="email" className="text-sm uppercase text-secondary-500 font-semibold">
+          Mail
+        </label>
+        <input
+          type="email"
+          name="senderMail"
+          id="email"
+          required
+          maxLength={500}
+          placeholder="exemple@gmail.com"
+          className="placeholder:text-grey-500 px-4 py-2 rounded-lg border text-secondary-500 border-secondary-100 w-full outline-none bg-inherit"
+        />
+      </div>
+
+      <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
+        <label htmlFor="phone" className="text-sm uppercase text-secondary-500 font-semibold">
+          Numéros téléphone
+        </label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          required
+          placeholder="ex: +261 00 00 000"
+          className="placeholder:text-grey-500 px-4 py-2 rounded-lg border text-secondary-500 border-secondary-100 w-full outline-none bg-inherit"
+        />
+      </div>
+
+      <div className="flex flex-col gap-2 col-span-2 md:col-span-1">
+        <label htmlFor="subject" className="text-sm uppercase text-secondary-500 font-semibold">
+          Objet
+        </label>
+        <select
+          id="subject"
+          name="subject"
+          required
+          className="px-4 py-2 rounded-lg border text-secondary-500 border-secondary-100 w-full outline-none bg-inherit"
+        >
+          <option value="default"></option>
+          <option value="Demande_de_stage">Demande de stage</option>
+          <option value="Demande_d_information">Demande d&apos; information</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+
+      <div className="flex flex-col gap-2 col-span-2">
+        <label htmlFor="message" className="text-sm uppercase text-secondary-500 font-semibold">
+          Message
+        </label>
+        <textarea
+          id="message"
+          name="message"
+          required
+          placeholder="Écrire un message..."
+          className="placeholder:text-grey-500 min-h-[30vh] text-start px-4 py-2 rounded-lg border text-secondary-500 border-secondary-100 w-full outline-none bg-inherit"
+        />
+      </div>
+      <div className="flex justify-end col-span-2">
+        <SubmitButton/>
+      </div>
+    </form>
+  )
+}
+
+function SubmitButton(){
+  const {pending} = useFormStatus()
+  return(
+    <button type="submit" className="p-2 rounded-lg bg-primary text-secondary-500 w-full md:w-fit min-w-[224px] max-w-[384px] mt-4 uppercase flex items-center justify-center space-x-4">
+      <Typography variant="small">
+        Evoyer
+      </Typography>
+      <SendIcon size={24}/>
+    </button>
+  )
 }
