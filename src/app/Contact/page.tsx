@@ -5,6 +5,7 @@ import { Typography } from "@/components";
 import { SendIcon } from "lucide-react";
 import React from "react";
 import { useFormStatus } from "react-dom";
+import toast from "react-hot-toast";
 function ContactPage() {
   return (
     <div className="min-h-screen pt-[20vh]">
@@ -29,11 +30,11 @@ function Form() {
       action={async (formaData) => {
         const { data, error } = await sendEmail(formaData);
         if (error) {
-          alert(error);
+          toast.error(error);
           return;
         }
 
-        alert("Email send successfully!");
+        toast.success("Email send successfully!");
       }}
       className="grid grid-cols-2 gap-4 grid-flow-dense"
     >
