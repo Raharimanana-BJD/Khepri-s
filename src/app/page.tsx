@@ -31,7 +31,7 @@ export default function Home() {
 function Heros(){
 const { ref, inView } = useInView({threshold: 0.65});
   return(
-    <section ref={ref} className="container">
+    <section ref={ref} className="container overflow-x-hidden">
       <div className="grid grid-cols-12">
       <motion.div 
           initial={{x: -100, opacity: 0}}
@@ -83,7 +83,7 @@ const { ref, inView } = useInView({threshold: 0.65});
 function Service() {
 const { ref, inView } = useInView({threshold: 0.65});
   return (
-    <section ref={ref} className="container">
+    <section ref={ref} className="container overflow-x-hidden">
       <div className=" flex justify-center gap-8 md:justify-between flex-wrap mt-16 md:mt-0">
         <motion.div
           initial={{ x: -100, opacity: 0 }}
