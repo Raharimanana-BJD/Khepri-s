@@ -9,8 +9,10 @@ import { stylesIcon } from "../lib/utils";
 import { CardBlogs, CardServices, dataProduit } from "../lib/constant";
 import Link from "next/link";
 import { useFormStatus } from "react-dom";
-import {motion} from "framer-motion"
+import {motion, useScroll, useTransform} from "framer-motion"
 import { InView, useInView } from "react-intersection-observer";
+import { useRef } from "react";
+import toast from "react-hot-toast";
 
 const iconMap={
   AppWindowMacIcon
@@ -29,7 +31,7 @@ export default function Home() {
 }
 
 function Heros(){
-const { ref, inView } = useInView({threshold: 0.65});
+const { ref, inView } = useInView({threshold: 0.4});
   return(
     <section ref={ref} className="container overflow-x-hidden">
       <div className="grid grid-cols-12">
@@ -37,7 +39,7 @@ const { ref, inView } = useInView({threshold: 0.65});
           initial={{x: -100, opacity: 0}}
           animate={inView ? {x: 0, opacity: 1} : {}}
           transition={{
-            type: "spring",
+            type: "just",
             stiffness:125,
             delay:0.1,
             duration:0.7
@@ -67,7 +69,7 @@ const { ref, inView } = useInView({threshold: 0.65});
             initial={{x: 200, opacity: 0}}
             animate={inView ? {x: 0, opacity: 1} : {}}
             transition={{
-              type: "spring",
+              type: "just",
               stiffness:125,
               delay:0.1,
               duration:0.7
@@ -81,7 +83,7 @@ const { ref, inView } = useInView({threshold: 0.65});
 }
 
 function Service() {
-const { ref, inView } = useInView({threshold: 0.65});
+const { ref, inView } = useInView({threshold: 0.64});
   return (
     <section ref={ref} className="container overflow-x-hidden">
       <div className=" flex justify-center gap-8 md:justify-between flex-wrap mt-16 md:mt-0">
@@ -89,12 +91,12 @@ const { ref, inView } = useInView({threshold: 0.65});
           initial={{ x: -100, opacity: 0 }}
           animate={inView ? { x: 0, opacity: 1 } : {}}
           transition={{
-            type: 'spring',
+            type: 'just',
             stiffness: 125,
             delay: 0.1,
             duration: 0.7,
           }}
-          className="justify-center flex flex-col"
+          className=" md:pt-8 md:pb-24 justify-center flex flex-col"
         >
           <Typography variant="small" className="text-grey-500 md:text-start text-center uppercase mb-2">
             Service
@@ -116,7 +118,7 @@ const { ref, inView } = useInView({threshold: 0.65});
           initial={{ x: 200, opacity: 0 }}
           animate={inView ? { x: 0, opacity: 1 } : {}}
           transition={{
-            type: 'spring',
+            type: 'just',
             stiffness: 125,
             delay: 0.1,
             duration: 0.7,
@@ -131,33 +133,72 @@ const { ref, inView } = useInView({threshold: 0.65});
 }
 
 function Produit(){
+  const {ref, inView} = useInView({threshold: 0.5})
   return(
-    <section className="bg-primary">
+    <section ref={ref} className="bg-primary">
       <div className="container py-8 h-screen flex flex-col justify-center items-center">
-          <Typography variant="small" className="text-grey-500 uppercase mb-2">Produit</Typography>
-          <Typography variant="h1" className="text-secondary-500 text-center">
-            Les differents type de<br/> produits
-          </Typography>
-          <Typography variant="p" className="text-secondary-100 text-center">
+          <motion.div
+          initial={{scale:0, opacity:0}}
+          animate={inView ? {scale:1, opacity:1}:{}}
+          transition={{
+            type:"spring",
+            stiffness:125,
+            delay:0.1,
+            duration:0.7
+          }}
+          >
+            <Typography variant="small" className="text-grey-500 uppercase mb-2">Produit</Typography>
+          </motion.div>
+          <motion.div
+            initial={{y:50, opacity:0}}
+            animate={inView ? {y:0, opacity:1}:{}}
+            transition={{
+              type:"spring",
+              stiffness:125,
+              delay:0.1,
+              duration:0.7
+            }}
+            >
+              <Typography variant="h1" className="text-secondary-500 text-center">
+                Les differents type de<br/> produits
+              </Typography>
+            </motion.div>
+          <motion.div
+          initial={{y:50, opacity:0}}
+          animate={inView ? {y:0, opacity:1}:{}}
+          transition={{
+            type:"spring",
+            stiffness:125,
+            delay:0.2,
+            duration:0.7
+          }}
+          >
+          <Typography variant="p" className="text-secondary-100 text-center mt-4">
             Une equipe pour SMIC. Competences techniques, design,<br/> capacite a se mettre a la place du commercant
           </Typography>
+          </motion.div>
           <div className="grid gap-8 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full py-8">
             {
                 dataProduit.slice(0, 3).map((card, index) => {
                   return (
-                    <CardProduit
-                      className={`${index >= CardServices.length - (CardServices.length - 1) ? 'hidden md:block' : ''}`}
-                      key={index}
+                    <motion.div
+                    initial={{opacity:0, y:50}}
+                    animate={inView ? {opacity:1, y:0} : {}}
+                    transition={{duration:0.5, delay: index * 0.3}}
+                    className={`${index >= CardServices.length - (CardServices.length - 1) ? 'hidden md:block' : ''}`}
+                    key={index}
                     >
-                      <div className="p-4 rounded-full h-16 w-16 mx-auto bg-secondary-500 dark:bg-primary dark:text-secondary-500 text-primary text-center flex items-center justify-center">
-                        {card.icon}
-                      </div>
-                      <Typography variant="h3" className="font-bold mt-2 text-secondary-500 text-center dark:text-grey-100">{card.title}</Typography>
-                    </CardProduit>
+                      <CardProduit>
+                        <div className="p-4 rounded-full h-16 w-16 mx-auto bg-secondary-500 dark:bg-primary dark:text-secondary-500 text-primary text-center flex items-center justify-center">
+                          {card.icon}
+                        </div>
+                        <Typography variant="h3" className="font-bold mt-2 text-secondary-500 text-center dark:text-grey-100">{card.title}</Typography>
+                      </CardProduit>
+                    </motion.div>
                   );
                 })
               }
-              <CTA url="/Produit" className="bg-primary dark:bg-secondary-500 flex md:hidden dark:text-primary text-secondary-500 w-full md:w-fit min-w-[224px]">
+              <CTA url="/Produit" className="bg-secondary-500 flex md:hidden text-primary w-full md:w-fit min-w-[224px]">
                 <Typography variant="small" className="uppercase text-[12px] font-bold">Voir plus</Typography>
               </CTA>
           </div>
@@ -167,14 +208,33 @@ function Produit(){
 }
 
 function Apropos(){
+  const {ref, inView} = useInView({threshold:0.5})
   return(
-    <section className="container">
+    <section ref={ref} className="container overflow-x-hidden">
     <div className="grid grid-cols-12">
-      <div className="order-2 md:order-1 col-span-12 md:col-span-6 py-8 flex items-start md:items-center justify-center md:justify-start">
+      <motion.div
+        initial={{ x: -100, opacity: 0 }}
+        animate={inView ? { x: 0, opacity: 1 } : {}}
+        transition={{
+          type: 'just',
+          stiffness: 125,
+          delay: 0.1,
+          duration: 0.7,
+        }} 
+      className="order-2 md:order-1 col-span-12 md:col-span-6 py-8 flex items-start md:items-center justify-center md:justify-start">
         <Image src={home_3} alt="Apropos" priority width={450}/>
-      </div>
+      </motion.div>
 
-      <div className="order-1 md:order-2 col-span-12 md:col-span-6 py-8 h-auto md:h-[100vh] flex flex-col justify-center items-center md:items-start">
+      <motion.div 
+        initial={{ x: 200, opacity: 0 }}
+        animate={inView ? { x: 0, opacity: 1 } : {}}
+        transition={{
+          type: 'just',
+          stiffness: 125,
+          delay: 0.1,
+          duration: 0.7,
+        }}
+      className="order-1 md:order-2 col-span-12 md:col-span-6 py-8 h-auto md:h-[100vh] flex flex-col justify-center items-center md:items-start">
           <Typography variant="small" className="text-grey-500 uppercase mb-2">A Proppos</Typography>
           <Typography variant="h1" className="text-secondary-500 dark:text-grey-100 md:text-start text-center">
             Innovation agile pour <br/>Solution web et<br/> Mobile
@@ -186,40 +246,71 @@ function Apropos(){
             <CTA url="/Apropos" className="bg-primary text-secondary-500 w-full md:w-fit min-w-[224px] max-w-[384px] mt-4">
               <Typography variant="small" className="uppercase text-[12px] font-bold">A propos de nous</Typography>
             </CTA>
-        </div>
+        </motion.div>
     </div>
   </section>
   )
 }
 
 function Blog() {
+  const {ref, inView} = useInView({threshold:0.5})
   return (
-    <section className="container">
+    <section
+     ref={ref} className="container overflow-x-hidden">
       <div className="flex items-end justify-center md:justify-between flex-wrap">
-        <div className="flex flex-col">
+        <motion.div
+        initial={{x:-100, opacity:0}}
+        animate={inView ? {x:0, opacity:1}:{}}
+        transition={
+          {
+            type:"just",
+            stiffnes:125,
+            delay:0.1,
+            duration:0.3
+          }
+        }
+         className="flex flex-col">
           <Typography variant="small" className="text-grey-500 md:text-start text-center uppercase mb-2">Blog</Typography>
           <Typography variant="h1" className="text-secondary-500 dark:text-grey-100 md:text-start text-center">
             Les derniers<br /> articles de notre blog
           </Typography>
-        </div>
-        <CTA url="/Blog" className="bg-primary hidden md:flex text-secondary-500 w-full md:w-fit min-w-[224px] max-w-[384px] mt-4">
-          <Typography variant="small" className="uppercase text-[12px] font-bold">Decouvrir tout</Typography>
-        </CTA>
+        </motion.div>
+        <motion.div
+        initial={{x:100, opacity:0}}
+        animate={inView ? {x:0, opacity:1}:{}}
+        transition={{
+          type:"just",
+          stiffness:125,
+          delay:0.1,
+          duration:0.3
+        }}
+        >
+          <CTA url="/Blog" className="bg-primary hidden md:flex text-secondary-500 w-full md:w-fit min-w-[224px] max-w-[384px] mt-4">
+            <Typography variant="small" className="uppercase text-[12px] font-bold">Decouvrir tout</Typography>
+          </CTA>
+        </motion.div>
       </div>
       <div className="grid gap-8 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full py-8">
         {
           CardBlogs.slice(0, 3).map((card, index) => (
-            <Link href={`/Blog/${card.id}`} key={card.id} className={`${index >= CardBlogs.length - (CardBlogs.length - 1) ? 'hidden md:block' : ''}`}>
-              <CardBlog>
-                <Image src={card.img} alt={card.title} priority quality={95} className="object-cover w-full h-44" />
-                <div className="p-5 flex flex-col justify-start">
-                  <Typography variant="small" className="mb-3 text-xs font-semibold tracking-wide uppercase">{card.title}</Typography>
-                  <Typography variant="h3" className="font-bold leading-5">{card.cathegorie}</Typography>
-                  <Typography variant="p" className="text-grey-500 [&:not(:first-child)]:mt-4 line-clamp-2">{card.description}</Typography>
-                  <Typography variant="small" className="[&:not(:first-child)]:mt-4">{card.date}</Typography>
-                </div>
-              </CardBlog>
-            </Link>
+            <motion.div
+            initial={{opacity:0, y:50}}
+            animate={inView ? {opacity:1, y:0} : {}}
+            transition={{duration:0.5, delay: index * 0.3}}
+            key={card.id} className={`${index >= CardBlogs.length - (CardBlogs.length - 1) ? 'hidden md:block' : ''}`}
+            >
+              <Link href={`/Blog/${card.id}`}>
+                <CardBlog>
+                  <Image src={card.img} alt={card.title} priority quality={95} className="object-cover w-full h-44" />
+                  <div className="p-5 flex flex-col justify-start">
+                    <Typography variant="small" className="mb-3 text-xs font-semibold tracking-wide uppercase">{card.title}</Typography>
+                    <Typography variant="h3" className="font-bold leading-5">{card.cathegorie}</Typography>
+                    <Typography variant="p" className="text-grey-500 [&:not(:first-child)]:mt-4 line-clamp-2">{card.description}</Typography>
+                    <Typography variant="small" className="[&:not(:first-child)]:mt-4">{card.date}</Typography>
+                  </div>
+                </CardBlog>
+              </Link>
+            </motion.div>
           ))
         }
         <CTA url="/Blog" className="bg-primary flex md:hidden text-secondary-500 w-full md:w-fit min-w-[224px] max-w-[384px] mt-4">
@@ -231,14 +322,24 @@ function Blog() {
 }
 
 function Contact(){
+  const {ref,inView} = useInView({threshold:0.5})
   return (
-    <section className="w-full p-8 md:p-16 bg-primary flex items-center justify-center">
-      <div className="container px-8 py-4 bg-grey-100 dark:bg-secondary-500 rounded-lg">
+    <section ref={ref} className="w-full p-8 md:p-16 bg-primary flex items-center justify-center">
+      <motion.div
+      initial={{y:50, opacity:0}}
+      animate={inView ? {y:0, opacity:1}:{}}
+      transition={{
+        type:"just",  
+        stiffness:125,
+        delay:0.1,
+        duration:0.3      
+      }}
+      className="container px-8 py-4 bg-grey-100 dark:bg-secondary-500 rounded-lg">
         <Typography variant="h3" className="text-secondary-500 dark:text-grey-100 mb-8">
           Prenez Contact
         </Typography>
         <Form/>
-      </div>
+      </motion.div>
     </section>
   );
 }
@@ -249,11 +350,11 @@ function Form(){
     action={async (formaData) =>{ 
     const {data, error} = await sendEmail(formaData)
     if(error){
-      alert(error)
+      toast.error(error)
       return
     }
 
-    alert("Email send successfully!")
+    toast.success("Email send successfully!")
     }}
      className="grid grid-cols-2 gap-4 grid-flow-dense">
       <div className="flex col-span-2 md:col-span-1 flex-col gap-2">

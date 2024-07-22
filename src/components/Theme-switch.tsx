@@ -39,7 +39,7 @@ export default function ThemeSwitch({ className }: themeProps) {
     <button
       onClick={toggleTheme}
       className={cn(
-        "bg-primary p-2 rounded-lg hover:scale-[1.15] active:scale-105",
+        "bg-primary p-2 rounded-lg hover:scale-[1.15] active:scale-105 transition-all duration-300",
         className
       )}
     >

@@ -5,20 +5,31 @@ import { Typography } from "@/components";
 import { SendIcon } from "lucide-react";
 import React from "react";
 import { useFormStatus } from "react-dom";
+import {motion} from "framer-motion"
 import toast from "react-hot-toast";
+import { useInView } from "react-intersection-observer";
 function ContactPage() {
+  const {ref, inView} = useInView({threshold:0.5})
   return (
-    <div className="min-h-screen pt-[20vh]">
+    <main ref={ref} className="min-h-screen pt-[20vh]">
       <section className="container w-full p-8 md:p-16 flex flex-col items-center justify-center">
-          <Typography
-            variant="h1"
-            className="text-secondary-500 dark:text-grey-100 mb-8"
-          >
-            Prenez Contact
+      <motion.div
+          initial={{y:50, opacity:0}}
+          animate={inView ? {y:0, opacity:1}:{}}
+          transition={{
+            type:"spring",
+            stiffness:125,
+            delay:0.1,
+            duration:0.7
+          }}
+        >
+          <Typography variant="h1" className="text-secondary-500 dark:text-grey-100 text-center mb-8">
+            Prenez contact
           </Typography>
+        </motion.div>
           <Form />
       </section>
-    </div>
+    </main>
   );
 }
 

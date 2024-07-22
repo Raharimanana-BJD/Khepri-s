@@ -8,7 +8,7 @@ interface propChildren {
   url:string
 }
 function CTA({ children, className, url }: propChildren) {
-  return <Link href={url} className={cn("p-2 rounded-lg flex items-center justify-center h-[50px] cursor-pointer active:scale-95 focus:scale-100 transition-all", className)}>{children}</Link>;
+  return <Link href={url} className={cn("p-2 rounded-lg flex items-center justify-center h-[50px] cursor-pointer hover:scale-105 active:scale-95 focus:scale-105 transition-all", className)}>{children}</Link>;
 }
 
 export default CTA;
