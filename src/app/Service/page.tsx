@@ -8,7 +8,15 @@ import {
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import "react-vertical-timeline-component/style.min.css";
+
+interface CardServicesProp {
+  id: string;
+  title: string;
+  description: string;
+  icon: JSX.Element; 
+}
 
 export default function ServicePage() {
   return (
@@ -18,7 +26,7 @@ export default function ServicePage() {
           Nos Service
         </Typography>
         <VerticalTimeline lineColor="" className="-z-50">
-          {CardServices.map((item, index) => (
+          {CardServices.map((item: CardServicesProp, index: number) => (
             <Fragment key={index}>
               <VerticalTimelineElement
                 visible={true}
@@ -36,24 +44,7 @@ export default function ServicePage() {
                 }}
                 icon={item.icon}
               >
-                <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.3 }}
-                >
-                  <Typography
-                    variant="h3"
-                    className="text-secondary-500"
-                  >
-                    {item.title}
-                  </Typography>
-                  <Typography
-                    variant="p"
-                    className="text-secondary-100"
-                  >
-                    {item.description}
-                  </Typography>
-                </motion.div>
+                <ServiceCard item={item} index={index} />
               </VerticalTimelineElement>
             </Fragment>
           ))}
@@ -62,3 +53,23 @@ export default function ServicePage() {
     </main>
   );
 }
+
+const ServiceCard = ({ item, index }: { item: CardServicesProp; index: number }) => {
+  const { ref, inView } = useInView({ triggerOnce: true });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+      transition={{ duration: 0.5, delay: index * 0.3 }}
+    >
+      <Typography variant="h3" className="text-secondary-500">
+        {item.title}
+      </Typography>
+      <Typography variant="p" className="text-secondary-100">
+        {item.description}
+      </Typography>
+    </motion.div>
+  );
+};
