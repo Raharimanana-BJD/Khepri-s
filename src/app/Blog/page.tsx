@@ -36,7 +36,7 @@ export default function Blog() {
     // card.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const {ref, inView} = useInView({threshold:0.5})
+  const {ref, inView} = useInView({threshold:0.1})
   return (
     <main ref={ref} className="min-h-[100dvh]">
       <section className="container flex flex-col items-center justify-center pt-[20vh]">
@@ -96,7 +96,7 @@ export default function Blog() {
 }
 
 function Wrapcard({ filteredBlogs }: WrapcardProps) {
-  const {ref, inView} = useInView({threshold:0.35})
+  const {ref, inView} = useInView({threshold:0.10})
   return (
     <section ref={ref} className="container">
       <div className="grid gap-8 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full py-8">

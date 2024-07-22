@@ -44,7 +44,7 @@ const { ref, inView } = useInView({threshold: 0.4});
             delay:0.1,
             duration:0.7
           }}
-      className="col-span-12 md:col-span-6 md:py-8 pt-[20vh] md:h-[100vh] h-[90vh] flex flex-col justify-center items-center md:items-start">
+      className="col-span-12 md:col-span-6 md:py-8 pt-[20vh] md:h-[100vh] h-screen flex flex-col justify-center items-center md:items-start">
         <Typography variant="small" className="text-grey-500 uppercase mb-2">Acceille</Typography>
         <Typography variant="h1" className="text-secondary-500 dark:text-grey-100 md:text-start text-center">
           Nous somme la pour <br/> concretiser votre projet de <br/> reve.
