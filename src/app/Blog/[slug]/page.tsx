@@ -53,7 +53,7 @@ export default function Article({ params }: BlogProps) {
           alt={blog.title}
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black opacity-60"></div>
+        <div className="absolute inset-0 bg-secondary-500 opacity-60"></div>
 
         <div className="absolute top-1/2 left-1/2 md:left-[29.222222%] transform -translate-x-1/2 -translate-y-1/2 w-[90vw] px-0 md:px-4 md:w-[50vw] text-white">
           <Typography variant="h1" className="mb-4">{blog.title}</Typography>
@@ -61,7 +61,7 @@ export default function Article({ params }: BlogProps) {
         </div>
       </div>
       <div className="container px-8 py-4 md:px-28 md:pb-28 md:pt-16">
-        <Typography variant="p">{blog.description}</Typography>
+        <Typography variant="p" className="text-secondary-500 dark:text-grey-100">{blog.description}</Typography>
       </div>
     </main>
   );

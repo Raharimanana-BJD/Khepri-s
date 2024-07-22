@@ -19,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={cn("min-h-[100dvh] bg-grey-100 antialiased font-sans]",inter.className)}>
+    <html lang="en" className="scroll-smooth">
+      <body className={cn("min-h-[100dvh] bg-grey-100 dark:bg-secondary-500 antialiased font-sans] duration-100 transition-all",inter.className)}>
         <Header />
         {children}
         <Footer/>

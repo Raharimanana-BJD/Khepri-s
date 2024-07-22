@@ -37,14 +37,14 @@ export default function Blog() {
   return (
     <main className="min-h-[100dvh]">
       <section className="container flex flex-col items-center justify-center pt-[20vh]">
-        <Typography variant="h1" className="text-secondary-500 text-center">
+        <Typography variant="h1" className="text-secondary-500 dark:text-grey-100 text-center">
           Articles blog
         </Typography>
         <Typography variant='p' className='text-grey-500 text-center'>
           L&apos;agence propose une gamme complète de services incluant des compétences <br /> techniques, du design et une compréhension des affaires.
         </Typography>
         <div>
-          <div className="flex items-center justify-between rounded-lg border text-secondary-500 border-secondary-100 w-[50vw] mt-4">
+          <div className="flex items-center justify-between rounded-lg border text-secondary-500 dark:text-grey-100 border-secondary-500 dark:border-grey-100 w-[50vw] mt-4">
             <input
               type="text"
               id="name"
@@ -73,8 +73,8 @@ function Wrapcard({ filteredBlogs }: WrapcardProps) {
               <CardBlog>
                 <Image src={card.img} alt={card.title} priority className="object-cover w-full h-44" />
                 <div className="p-5 flex flex-col justify-start">
-                  <Typography variant="small" className="mb-3 text-xs font-semibold tracking-wide uppercase">{card.title}</Typography>
-                  <Typography variant="h3" className="font-bold leading-5">{card.cathegorie}</Typography>
+                  <Typography variant="small" className="mb-3 text-secondary-500 text-xs font-semibold tracking-wide uppercase">{card.title}</Typography>
+                  <Typography variant="h3" className="font-bold leading-5 text-secondary-500">{card.cathegorie}</Typography>
                   <Typography variant="p" className="text-grey-500 [&:not(:first-child)]:mt-4 line-clamp-2">{card.description}</Typography>
                   <Typography variant="small" className="[&:not(:first-child)]:mt-4">{card.date}</Typography>
                 </div>

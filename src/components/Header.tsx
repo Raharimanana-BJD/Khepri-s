@@ -3,11 +3,10 @@ import Image from "next/image";
 import { logo_1 } from "../asset";
 import { Links } from "../lib/constant";
 import Link from "next/link";
-import { Moon } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { stylesIcon } from "../lib/utils";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import {ThemeSwitch} from "@/components";
 
 export default function Header() {
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -16,19 +15,19 @@ export default function Header() {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
   return (
-    <header className="w-full pb-4 pt-10 fixed bg-grey-100 shadow-2xl shadow-grey-100">
+    <motion.header
+    initial={{y: -100, opacity: 0}}
+    animate={{y: 0, opacity: 1}}
+    className="w-full pb-4 pt-10 z-10 fixed bg-inherit">
       <div className="container mx-auto max-w-7xl flex items-center justify-between">
         <Image
           src={logo_1}
           alt="Khepri Service"
-          className="h-auto"
+          className="h-auto dark:invert"
           priority
-          // className="dark:invert"
         />
         <NavLinks />
-        <button className="bg-primary p-2 rounded-lg sm:block hidden">
-          <Moon fill={`${stylesIcon.black}`} strokeWidth={0} />
-        </button>
+        <ThemeSwitch className="sm:block hidden"/>
         <button onClick={toggleMobileMenu} className="bg-primary p-2 rounded-lg uppercase text-secondary-500 font-medium text-xl block sm:hidden">
           menu
         </button>
@@ -36,7 +35,7 @@ export default function Header() {
       <AnimatePresence>
         {isMobileMenuOpen && <NavMobile onClose={toggleMobileMenu} />}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }
 
@@ -44,13 +43,13 @@ function NavLinks() {
   const currentPath = usePathname();
 
   return (
-    <nav className="sm:flex hidden items-center space-x-8">
+    <nav className="sm:flex hidden items-center space-x-8 dark:text-grey-100">
       {Links.map((item, index) => (
         <Link
           href={item.path}
           key={index}
           className={`${"font-medium"} ${
-            currentPath == item.path && "px-4 py-2 bg-primary rounded"
+            currentPath == item.path && "px-4 py-2 bg-primary text-secondary-500 rounded"
           }`}
         >
           {item.name}
@@ -93,9 +92,7 @@ function NavMobile({ onClose }: NavMobileProps) {
           {item.name}
         </Link>
       ))}
-      <button className="border p-2 rounded-lg border-secondary-500">
-        <Moon fill={`${stylesIcon.black}`} strokeWidth={0} />
-      </button>
+      <ThemeSwitch className="border-secondary-500 border"/>
     </motion.nav>
   );
 }
